@@ -1,5 +1,5 @@
 pipeline {
-    agent {label "builtinnode" } 
+    agent {label "mavenbuild" } 
     parameters{
         choice(name: 'BRANCH_NAME', choices: ['master', 'scripted', 'declarative'], description: 'Branch to build')
         string(name: 'mvn_goal', defaultValue: 'package', description: 'maven goal')
@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('GIT') {
             steps {
-                git url: 'https://github.com/GitPracticeRepo/java11-examples',
+                git url: 'https://github.com/noobcoder0001/JENKINS-MAVEN',
                 branch: "${params.BRANCH_NAME}"
             }
         }
