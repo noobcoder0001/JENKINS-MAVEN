@@ -1,8 +1,8 @@
-node('builtinnode') {
+node('mavenbuild') {
     properties([parameters([choice(choices: ['master', 'scripted', 'declarative'], description: 'Branch to build', name: 'Branch_to_build'), string(defaultValue: 'package', description: 'maven goal', name: 'mvn_goal')])])
     try {
         stage('GIT') {
-        git url: "https://github.com/GitPracticeRepo/java11-examples",
+        git url: "https://github.com/noobcoder0001/JENKINS-MAVEN",
         branch: "${params.Branch_to_build}"
         }
     stage('BUILD') {
