@@ -1,0 +1,37 @@
+pipeline {
+    agent {label "builtinnode" } 
+    parameters{
+        choice(name: 'BRANCH_NAME', choices: ['master', 'scripted', 'declarative'], description: 'Branch to build')
+        string(name: 'mvn_goal', defaultValue: 'package', description: 'maven goal')
+    }
+    stages {
+        stage('GIT') {
+            steps {
+                git url: 'https://github.com/GitPracticeRepo/java11-examples',
+                branch: "${params.BRANCH_NAME}"
+            }
+        }
+        stage('BUILD') {
+            steps {
+                sh "mvn ${params.mvn_goal}"
+            }
+        }
+        stage('PUBLISH REPORTS') {
+            steps {
+                junit '**/TEST-*.xml'
+            } 
+        }
+        stage('ARCHEIVE ARTIFACTS') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
+            }
+        }
+        stage('EMAIL') {
+            steps {
+                mail to: 'rakeshn6711@gmail.com',
+                subject: 'status',
+                body: 'build status'
+            }            
+        }
+    }
+}
